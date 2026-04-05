@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from models import SQLAction, SQLObservation
-from server.my_env_environment import MyEnvEnvironment
+from my_env_environment import MyEnvEnvironment
 
 app = FastAPI(
     title="SQL Query Grader",
