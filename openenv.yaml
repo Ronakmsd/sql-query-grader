@@ -1,0 +1,49 @@
+name: sql-query-grader
+version: "1.0.0"
+description: >
+  A real-world SQL query evaluation environment where an AI agent must write
+  correct SQL queries for business analytics tasks of increasing difficulty.
+  Covers SELECT, WHERE, GROUP BY, HAVING, JOIN, and subqueries on a realistic
+  employee/department/project database.
+
+author: Ronak Bhanushali
+tags:
+  - openenv
+  - sql
+  - data-analytics
+  - business-intelligence
+  - education
+
+tasks:
+  - name: easy
+    description: "Filter employees by department and sort by salary"
+    difficulty: easy
+    max_steps: 5
+
+  - name: medium
+    description: "Aggregate salary by department with HAVING filter"
+    difficulty: medium
+    max_steps: 5
+
+  - name: hard
+    description: "Multi-table JOIN to find employees in active project departments"
+    difficulty: hard
+    max_steps: 5
+
+observation_space:
+  task_description: "Natural language description of the SQL task"
+  schema_info: "Database schema with table names and columns"
+  feedback: "Execution result and scoring feedback"
+  current_score: "Current score between 0.0 and 1.0"
+
+action_space:
+  query: "A valid SQL SELECT query string"
+
+reward:
+  min: 0.0
+  max: 1.0
+  description: >
+    Reward is computed based on three components:
+    - Column correctness (30%): Are the right columns returned?
+    - Row count accuracy (30%): Is the number of rows correct?
+    - Data accuracy (40%): Do the actual values match expected output?
