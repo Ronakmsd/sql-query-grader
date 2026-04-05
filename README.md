@@ -1,4 +1,14 @@
-# SQL Query Grader — OpenEnv Environment
+---
+title: SQL Query Grader
+emoji: 🗄️
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+tags:
+  - openenv
+---
+#SQL Query Grader — OpenEnv Environment
 
 A real-world OpenEnv environment where an AI agent must write correct SQL queries
 for business analytics tasks of increasing difficulty.
