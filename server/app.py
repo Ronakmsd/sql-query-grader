@@ -8,12 +8,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-envs = {
-    "easy": MyEnvEnvironment("easy"),
-    "medium": MyEnvEnvironment("medium"),
-    "hard": MyEnvEnvironment("hard")
-}
-
 @app.get("/")
 def root():
     return {
@@ -29,12 +23,15 @@ def health():
 
 @app.post("/reset")
 def reset(task: str = "easy"):
-    return envs[task].reset()
+    env = MyEnvEnvironment(task)
+    return env.reset()
 
 @app.post("/step")
 def step(action: dict, task: str = "easy"):
-    return envs[task].step(action)
+    env = MyEnvEnvironment(task)
+    return env.step(action)
 
 @app.get("/state")
 def state(task: str = "easy"):
-    return envs[task].state()
+    env = MyEnvEnvironment(task)
+    return env.state()
