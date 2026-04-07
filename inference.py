@@ -16,30 +16,31 @@ def home():
 @app.post("/reset")
 async def reset(request: Request):
     global state
-    print("START reset")
-    
+
+    print("START")
     try:
-        data = await request.json()
-        print("STEP received input")
+        _ = await request.json()   # important: request read
         
         state = {}
-        
-        print("END reset")
-        return {"status": "success"}
+
+        print("STEP")
+        print("END")
+
+        return {"success": True}
     
     except Exception as e:
-        print("ERROR:", str(e))
-        return {"status": "error"}
+        print("ERROR", str(e))
+        return {"success": False}
 
 @app.post("/step")
 async def step(request: Request):
-    print("START step")
-    print("END step")
-    return {"status": "ok"}
+    print("START")
+    print("END")
+    return {"success": True}
 
 @app.get("/health")
 def health():
-    return {"status": "healthy"}
+    return {"status": "ok"}
 
 @app.get("/state")
 def get_state():
