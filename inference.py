@@ -9,19 +9,21 @@ API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o-mini")
 HF_TOKEN = os.getenv("HF_TOKEN")
 
-# REQUEST FORMAT
+# Dummy state
+state_data = {}
+
 class QueryRequest(BaseModel):
     query: str
 
-# REQUIRED ENDPOINTS
-
 @app.get("/")
 def home():
-    return {"message": "SQL Query Grader running"}
+    return {"status": "ok"}
 
 @app.post("/reset")
 def reset():
-    return {"status": "reset done"}
+    global state_data
+    state_data = {}
+    return {"status": "success"}
 
 @app.post("/step")
 def step():
@@ -33,8 +35,4 @@ def health():
 
 @app.get("/state")
 def state():
-    return {"state": "ok"}
-
-@app.get("/docs")
-def docs():
-    return {"docs": "available"}
+    return {"state": state_data}
