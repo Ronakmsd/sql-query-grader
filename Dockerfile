@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY server/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir fastapi uvicorn openenv-core pydantic
 
 COPY . .
