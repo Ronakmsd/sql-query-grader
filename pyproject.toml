@@ -1,10 +1,8 @@
 [project]
 name = "sql-query-grader"
 version = "2.0.0"
-description = "SQL Query Evaluation Environment for OpenEnv Hackathon"
-authors = [
-    {name = "Ronak Bhanushali"}
-]
+description = "SQL Query Grader OpenEnv"
+authors = [{name = "Ronak Bhanushali"}]
 requires-python = ">=3.11"
 dependencies = [
     "fastapi==0.115.0",
@@ -12,7 +10,11 @@ dependencies = [
     "openai==1.14.0",
     "pydantic==2.9.2",
     "httpx==0.27.0",
+    "openenv-core>=0.2.0",
 ]
+
+[project.scripts]
+server = "server.app:main"
 
 [build-system]
 requires = ["setuptools>=61.0"]
