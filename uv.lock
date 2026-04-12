@@ -1,0 +1,15 @@
+version = 1
+revision = 1
+
+[[package]]
+name = "sql-query-grader"
+version = "2.0.0"
+source = { virtual = "." }
+dependencies = [
+  { name = "fastapi" },
+  { name = "uvicorn" },
+  { name = "openai" },
+  { name = "pydantic" },
+  { name = "httpx" },
+  { name = "openenv-core" },
+]
