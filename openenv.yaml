@@ -1,10 +1,13 @@
 name: sql-query-grader
-version: "1.0.0"
+version: "2.0.0"
 description: >
   A real-world SQL query evaluation environment where an AI agent must write
   correct SQL queries for business analytics tasks of increasing difficulty.
-  Covers SELECT, WHERE, GROUP BY, HAVING, JOIN, and subqueries on a realistic
-  employee/department/project database.
+  The environment uses a real SQLite database with employee, department, and
+  project data. The agent receives natural language task descriptions and
+  schema information, writes SQL queries, executes them, and receives
+  execution-based feedback with scores derived from column correctness (30%),
+  row count accuracy (30%), and data accuracy (40%).
 
 author: Ronak Bhanushali
 tags:
@@ -13,37 +16,55 @@ tags:
   - data-analytics
   - business-intelligence
   - education
+  - sqlite
+  - real-execution
 
 tasks:
   - name: easy
-    description: "Filter employees by department and sort by salary"
+    description: "Find all Engineering department employees earning above 80000, sorted by salary descending."
     difficulty: easy
     max_steps: 5
 
   - name: medium
-    description: "Aggregate salary by department with HAVING filter"
+    description: "For each department, calculate average salary and headcount. Only show departments with average salary above 70000, ordered by average salary descending."
     difficulty: medium
     max_steps: 5
 
   - name: hard
-    description: "Multi-table JOIN to find employees in active project departments"
+    description: "Find employees who work on active projects in Engineering or Research departments, with project names and hours allocated. Sort by hours_allocated descending."
     difficulty: hard
     max_steps: 5
 
 observation_space:
   task_description: "Natural language description of the SQL task"
   schema_info: "Database schema with table names and columns"
-  feedback: "Execution result and scoring feedback"
-  current_score: "Current score between 0.0 and 1.0"
+  feedback: "Execution result and scoring feedback from real SQL execution"
+  current_score: "Current score between 0.0 and 1.0 based on real query results"
+  rows_returned: "Number of rows returned by the submitted query"
+  tool_result: "Sample of actual rows returned by the query"
 
 action_space:
-  query: "A valid SQL SELECT query string"
+  query: "A valid SQL SELECT query string targeting the provided schema"
 
 reward:
-  min: 0.0
-  max: 1.0
+  min: 0.01
+  max: 0.99
   description: >
-    Reward is computed based on three components:
+    Reward is computed based on real SQL execution against a SQLite database:
     - Column correctness (30%): Are the right columns returned?
     - Row count accuracy (30%): Is the number of rows correct?
     - Data accuracy (40%): Do the actual values match expected output?
+
+environment:
+  type: http
+  endpoints:
+    - POST /reset
+    - POST /step
+    - GET /state
+    - POST /grade
+  database: SQLite (in-memory seeded on startup)
+  tables:
+    - employees (id, name, department_id, salary, hire_date, role)
+    - departments (id, name, budget, location)
+    - projects (id, name, department_id, status, budget, start_date)
+    - employee_projects (employee_id, project_id, hours_allocated)
