@@ -1,12 +1,17 @@
 FROM python:3.11-slim
 
+# Set working directory
 WORKDIR /app
 
+# Install dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir fastapi uvicorn openenv-core pydantic
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy source
 COPY . .
 
+# Expose port (HuggingFace Spaces uses 7860)
 EXPOSE 7860
 
-CMD ["uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "7860"]
+# Run FastAPI with uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
